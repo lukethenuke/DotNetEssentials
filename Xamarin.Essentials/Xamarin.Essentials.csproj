@@ -1,7 +1,7 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras/2.0.54">
   <PropertyGroup>
-    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">netstandard1.0;netstandard2.0;Xamarin.iOS10;Xamarin.Mac20;Xamarin.TVOS10;Xamarin.WatchOS10;MonoAndroid60;MonoAndroid70;MonoAndroid71;MonoAndroid80;MonoAndroid81;MonoAndroid90;uap10.0.16299;tizen40;</TargetFrameworks>
-    <TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">netstandard1.0;netstandard2.0;Xamarin.iOS10;Xamarin.Mac20;Xamarin.TVOS10;Xamarin.WatchOS10;MonoAndroid60;MonoAndroid70;MonoAndroid71;MonoAndroid80;MonoAndroid81;MonoAndroid90;tizen40;</TargetFrameworks>
+    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">netstandard1.0;netstandard2.0;Xamarin.iOS10;Xamarin.Mac20;Xamarin.TVOS10;Xamarin.WatchOS10;MonoAndroid60;MonoAndroid70;MonoAndroid71;MonoAndroid80;MonoAndroid81;MonoAndroid90;uap10.0.16299;tizen40;net461;</TargetFrameworks>
+    <TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">netstandard1.0;netstandard2.0;Xamarin.iOS10;Xamarin.Mac20;Xamarin.TVOS10;Xamarin.WatchOS10;MonoAndroid60;MonoAndroid70;MonoAndroid71;MonoAndroid80;MonoAndroid81;MonoAndroid90;tizen40;net461;</TargetFrameworks>
     <AssemblyName>Xamarin.Essentials</AssemblyName>
     <RootNamespace>Xamarin.Essentials</RootNamespace>
     <PackageId>DotNetEssentials</PackageId>
@@ -112,6 +112,22 @@
     <Compile Include="**\*.tizen.cs" />
     <Compile Include="**\*.tizen.*.cs" />
   </ItemGroup>
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('net461')) ">
+    <Reference Include="gtk-sharp, Version=2.12.0.0">
+      <HintPath>/usr/lib/cli/gtk-sharp-2.0/gtk-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="glib-sharp, Version=2.12.0.0">
+      <HintPath>/usr/lib/cli/glib-sharp-2.0/glib-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="gdk-sharp, Version=2.12.0.0">
+      <HintPath>/usr/lib/cli/gdk-sharp-2.0/gdk-sharp.dll</HintPath>
+    </Reference>
+    <Compile Include="**\*.netstandard.cs" />
+    <Compile Include="**\*.netstandard.*.cs" />
+  </ItemGroup>
+  <PropertyGroup Condition=" $(TargetFramework.StartsWith('net461')) ">
+    <DefineConstants>$(DefineConstants);GTK</DefineConstants>
+  </PropertyGroup>
   <Import Project="$(MSBuildThisFileDirectory)mdoc.targets" />
   <Import Project="$(MSBuildThisFileDirectory)..\CodeStyles.targets" />
 </Project>
