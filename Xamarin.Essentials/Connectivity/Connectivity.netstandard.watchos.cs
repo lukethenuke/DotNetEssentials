@@ -28,7 +28,14 @@ namespace Xamarin.Essentials
         {
             get
             {
-                if (NetworkInterface.GetIsNetworkAvailable())
+                if (!NetworkInterface.GetIsNetworkAvailable())
+                    return NetworkAccess.None;
+
+                var gateways = NetworkInterface.GetAllNetworkInterfaces()
+                    .Where(ni => ni.NetworkInterfaceType != NetworkInterfaceType.Loopback)
+                    .SelectMany(ni => ni.GetIPProperties().GatewayAddresses);
+
+                if (gateways.Count() > 0)
                     return NetworkAccess.Internet;
 
                 return NetworkAccess.None;
